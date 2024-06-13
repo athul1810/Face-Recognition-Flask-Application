@@ -33,20 +33,19 @@ face_recognition_flask_app/
 
 app.py
 ->templates/
-    index.html
-    index1.html
-    capture.html
-    upload.html
-    manage_photos.html
+
+contains all html files
     
 ->static/
-    css/
-    js/
+
     
 ->uploads/
-    (uploaded face images)
+
+(uploaded face images)
 
 ->encodings.pkl
+
 ->names.pkl
+
 ->requirements.txt
 
