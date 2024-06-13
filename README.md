@@ -16,15 +16,16 @@ Features
 
 Technologies Used
 
-Flask: A lightweight WSGI web application framework in Python.
+- Flask: A lightweight WSGI web application framework in Python.
 
-OpenCV: An open-source computer vision and machine learning software library.
+- OpenCV: An open-source computer vision and machine learning software library.
 
-face_recognition: A simple and easy-to-use library for face recognition in Python.
+- face_recognition: A simple and easy-to-use library for face recognition in Python.
 
-HTML/CSS/JavaScript: For creating the web pages and user interface.
+- HTML/CSS/JavaScript: For creating the web pages and user interface.
 
-SQLite: For storing face encodings and names persistently.
+- SQLite: For storing face encodings and names persistently.
+
 
 Project Structure
 
