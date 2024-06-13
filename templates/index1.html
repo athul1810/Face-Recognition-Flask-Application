@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+        #video-container img {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border-radius: 15px;
+            border: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        #face-label {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        #upload-link {
+            font-size: 20px;
+            text-decoration: none;
+            color: #007bff;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+        #upload-link:hover {
+            color: #0056b3;
+        }
+        #show-gallery-btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #show-gallery-btn:hover {
+            background-color: #0056b3;
+        }
+        #photo-gallery {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .photo-item {
+            margin: 10px;
+            text-align: center;
+        }
+        .photo-item img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .photo-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .photo-item button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .photo-item button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+            <div id="face-label">Waiting for face recognition...</div>
+            <a id="upload-link" href="{{ url_for('upload') }}">Upload a new face image</a>
+        </div>
+        <div id="photo-gallery-container">
+            <button id="show-gallery-btn" onclick="toggleGallery()">Show Photo Gallery ({{ photo_count }} photos)</button>
+            <div id="photo-gallery">
+                {% for photo in photos %}
+                <div class="photo-item">
+                    <img src="{{ url_for('uploaded_file', filename=photo) }}" alt="{{ photo }}">
+                    <div>{{ photo }}</div>
+                    <button onclick="deletePhoto('{{ photo }}')">Delete</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        function fetchRecognizedNames() {
+            fetch('/recognized_names')
+                .then(response => response.json())
+                .then(data => {
+                    const faceLabel = document.getElementById('face-label');
+                    if (data.length > 0) {
+                        faceLabel.innerText = `Recognized faces: ${data.join(', ')}`;
+                    } else {
+                        faceLabel.innerText = 'No faces recognized';
+                    }
+                })
+                .catch(error => console.error('Error fetching recognized names:', error));
+        }
+
+        function toggleGallery() {
+            const gallery = document.getElementById('photo-gallery');
+            const button = document.getElementById('show-gallery-btn');
+            if (gallery.style.display === 'none') {
+                gallery.style.display = 'flex';
+                button.innerText = `Hide Photo Gallery ({{ photo_count }} photos)`;
+            } else {
+                gallery.style.display = 'none';
+                button.innerText = `Show Photo Gallery ({{ photo_count }} photos)`;
+            }
+        }
+
+        function deletePhoto(filename) {
+            fetch('/delete_photo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ filename: filename })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Photo deleted successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete photo.');
+                }
+            })
+            .catch(error => console.error('Error deleting photo:', error));
+        }
+
+        setInterval(fetchRecognizedNames, 1000);  // Fetch recognized names every second
+    </script> 
+</body>
+</html>

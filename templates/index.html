@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #video-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        #video-container img {
+            width: 640px;
+            height: 480px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        #face-label {
+            margin-top: 10px;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+        <div id="face-label">Waiting for face recognition...</div>
+    </div>
+    <script>
+        function fetchRecognizedNames() {
+            fetch('/recognized_names')
+                .then(response => response.json())
+                .then(data => {
+                    const faceLabel = document.getElementById('face-label');
+                    if (data.length > 0) {
+                        faceLabel.innerText = `Recognized faces: ${data.join(', ')}`;
+                    } else {
+                        faceLabel.innerText = 'No faces recognized';
+                    }
+                })
+                .catch(error => console.error('Error fetching recognized names:', error));
+        }
+
+        setInterval(fetchRecognizedNames, 1000);  // Fetch recognized names every second
+    </script>
+</body>
+</html>
