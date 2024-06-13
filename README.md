@@ -27,25 +27,31 @@ Technologies Used
 - SQLite: For storing face encodings and names persistently.
 
 
-Project Structure
+Usage
 
-face_recognition_flask_app/
+Real-time Face Recognition
 
-app.py
-->templates/
+- Visit the home page to see the real-time video feed from your webcam.
 
-contains all html files
-    
-->static/
+- The application will recognize faces that have been added to the database.
 
-    
-->uploads/
+Upload Face Images
 
-(uploaded face images)
+- Go to the "Upload a new face image" page.
 
-->encodings.pkl
+- Enter the name of the person and select the image file to upload.
 
-->names.pkl
+Capture Face Images
 
-->requirements.txt
+- Go to the "Capture Face Image" page.
+
+- Use your webcam to capture the face image and enter the person's name.
+
+Manage Face Images
+
+- View the photo gallery to see all uploaded images.
+
+- Delete any image by clicking the "Delete" button.
+
+  
 
