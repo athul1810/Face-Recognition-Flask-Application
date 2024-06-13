@@ -53,5 +53,28 @@ Manage Face Images
 
 - Delete any image by clicking the "Delete" button.
 
+Program Structure
+
+face_recognition_flask_app/
+│
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── index1.html
+│   ├── capture.html
+│   ├── upload.html
+│   ├── manage_photos.html
+├── static/
+│   ├── css/
+│   ├── js/
+├── uploads/
+│   ├── (uploaded face images)
+├── encodings.pkl
+├── names.pkl
+├── requirements.txt
+├── README.md
+└── .gitignore
+
+
   
 
